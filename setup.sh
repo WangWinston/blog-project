@@ -15,6 +15,7 @@ NC='\033[0m'
 # 配置
 NODE_VERSION=20
 JAVA_VERSION=21
+MAVEN_VERSION=3.9.6
 PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 # 打印函数
@@ -85,6 +86,47 @@ install_java() {
     sudo apt-get install -y openjdk-${JAVA_VERSION}-jdk
     info "Java 安装完成 ✓"
     java -version
+}
+
+# 检查 Maven
+check_maven() {
+    step "检查 Maven..."
+    if command_exists mvn; then
+        local version=$(mvn -version 2>&1 | head -1 | grep -oP 'Apache Maven \K[0-9]+\.[0-9]+\.[0-9]+')
+        if [ -n "$version" ]; then
+            info "Maven $version 已安装 ✓"
+            return 0
+        fi
+    fi
+    return 1
+}
+
+# 安装 Maven
+install_maven() {
+    step "安装 Maven ${MAVEN_VERSION}..."
+    local maven_url="https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz"
+    local maven_dir="/opt/maven"
+
+    info "下载 Maven..."
+    wget -q "$maven_url" -O /tmp/maven.tar.gz
+
+    info "安装 Maven..."
+    sudo mkdir -p "$maven_dir"
+    sudo tar -xzf /tmp/maven.tar.gz -C "$maven_dir" --strip-components=1
+
+    # 添加到 PATH
+    if ! grep -q "MAVEN_HOME" /etc/environment 2>/dev/null; then
+        echo "MAVEN_HOME=$maven_dir" | sudo tee -a /etc/environment
+        echo "PATH=\"\$PATH:\$MAVEN_HOME/bin\"" | sudo tee -a /etc/environment
+    fi
+
+    # 当前会话生效
+    export MAVEN_HOME="$maven_dir"
+    export PATH="$PATH:$MAVEN_HOME/bin"
+
+    rm -f /tmp/maven.tar.gz
+    info "Maven 安装完成 ✓"
+    mvn -version
 }
 
 # 检查 .env 文件
@@ -243,6 +285,11 @@ init() {
     # 检查/安装 Java
     if ! check_java; then
         install_java
+    fi
+
+    # 检查/安装 Maven
+    if ! check_maven; then
+        install_maven
     fi
 
     # 安装依赖
