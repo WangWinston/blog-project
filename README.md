@@ -21,7 +21,7 @@
 
 ### 前置要求
 
-- 服务器: 2核2G 以上
+- 服务器: Ubuntu 20.04+ (2核2G 以上)
 - 已安装 Docker 和 Docker Compose
 - 已安装 Git
 
@@ -32,53 +32,55 @@
 git clone https://github.com/WangWinston/blog-project.git
 cd blog-project
 
-# 2. 配置环境变量
-cp .env.example .env
-nano .env  # 修改配置
-
-# 3. 启动服务
-chmod +x deploy.sh
-./deploy.sh start
+# 2. 初始化并启动
+chmod +x setup.sh
+./setup.sh init
 ```
 
-访问 `http://你的服务器IP` 即可看到博客首页。
+脚本会自动：
+1. 启动 MySQL 和 Redis (Docker)
+2. 检查并安装 Node.js 20 和 Java 21
+3. 安装项目依赖
+4. 启动前端和后端应用
 
-### 部署脚本命令
+### 访问地址
 
-```bash
-./deploy.sh start    # 启动服务
-./deploy.sh stop     # 停止服务
-./deploy.sh restart  # 重启服务
-./deploy.sh logs     # 查看日志
-./deploy.sh status   # 查看状态
-./deploy.sh update   # 更新部署
-./deploy.sh backup   # 备份数据库
-```
+- 前端门户: http://localhost:5173
+- 后台管理: http://localhost:5173/admin
+- 后端 API: http://localhost:8080
 
-## 环境变量配置
-
-编辑 `.env` 文件:
-
-```env
-# MySQL
-MYSQL_ROOT_PASSWORD=root123    # MySQL root 密码
-MYSQL_PASSWORD=blog123         # 博客数据库密码
-
-# JWT
-JWT_SECRET=your-secret-key     # JWT 密钥 (至少256位)
-
-# GitHub OAuth (可选)
-GITHUB_CLIENT_ID=your-client-id
-GITHUB_CLIENT_SECRET=your-client-secret
-GITHUB_REDIRECT_URI=http://your-domain/api/auth/github/callback
-```
-
-## 默认账号
+### 默认账号
 
 - 用户名: `admin`
 - 密码: `admin123`
 
 > 首次登录后请立即修改密码
+
+### 管理命令
+
+```bash
+./setup.sh start    # 启动所有服务
+./setup.sh stop     # 停止所有服务
+./setup.sh status   # 查看服务状态
+./setup.sh logs     # 查看日志
+```
+
+## 环境变量
+
+编辑 `.env` 文件配置：
+
+```env
+# MySQL
+MYSQL_ROOT_PASSWORD=root123
+MYSQL_PASSWORD=blog123
+
+# JWT (生产环境请修改)
+JWT_SECRET=your-secret-key-at-least-256-bits
+
+# GitHub OAuth (可选)
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+```
 
 ## 项目结构
 
@@ -92,11 +94,10 @@ blog-project/
 │   ├── blog-interfaces/    # 接口层
 │   └── blog-bootstrap/     # 启动模块
 ├── blog-web/               # Vue 3 前端
-├── nginx/                  # Nginx 配置
-├── mysql/                  # 数据库初始化
-├── docker-compose.yml      # Docker 编排
-├── deploy.sh               # 部署脚本
-└── .env.example            # 环境变量示例
+├── mysql/                  # 数据库初始化脚本
+├── docs/                   # 设计文档
+├── setup.sh                # 部署脚本
+└── docker-compose.infra.yml # 基础设施配置
 ```
 
 ## 本地开发
@@ -105,7 +106,7 @@ blog-project/
 
 ```bash
 cd blog-backend
-mvn spring-boot:run -Dspring-boot.run.profiles=dev
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
 ### 前端
@@ -118,7 +119,7 @@ npm run dev
 
 ## 功能特性
 
-- 文章管理 (Markdown 编辑、版本历史、定时发布)
+- 文章管理 (Markdown 编辑、定时发布)
 - 分类和标签管理
 - 评论系统 (审核、楼中楼)
 - 用户系统 (本地注册、GitHub OAuth)
