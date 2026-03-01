@@ -59,14 +59,15 @@ const handleLogin = async () => {
   loading.value = true
   try {
     const res = await login(form)
+    const loginData = res as any
 
-    if (res.data.user.role !== 'ADMIN') {
+    if (loginData.user.role !== 'ADMIN') {
       alert('您没有管理员权限')
       return
     }
 
-    userStore.setToken(res.data.accessToken)
-    userStore.setUser(res.data.user)
+    userStore.setToken(loginData.accessToken)
+    userStore.setUserInfo(loginData.user)
     router.push('/admin')
   } catch (error: any) {
     alert(error.message || '登录失败')

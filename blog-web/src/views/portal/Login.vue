@@ -99,8 +99,9 @@ const handleLogin = async () => {
   loading.value = true
   try {
     const res = await login(loginForm)
-    userStore.setToken(res.data.accessToken)
-    userStore.setUser(res.data.user)
+    const loginData = res as any
+    userStore.setToken(loginData.accessToken)
+    userStore.setUserInfo(loginData.user)
     const redirect = route.query.redirect as string
     router.push(redirect || '/portal')
   } catch (error: any) {

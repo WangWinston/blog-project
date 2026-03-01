@@ -69,7 +69,7 @@
             <td class="px-6 py-4 text-sm text-gray-500">
               {{ article.viewCount }} / {{ article.likeCount }}
             </td>
-            <td class="px-6 py-4 text-sm text-gray-500">{{ formatDate(article.createdTime) }}</td>
+            <td class="px-6 py-4 text-sm text-gray-500">{{ formatDate(article.createdAt) }}</td>
             <td class="px-6 py-4 text-sm">
               <div class="flex gap-2">
                 <router-link :to="`/admin/articles/edit/${article.id}`" class="text-primary-600 hover:text-primary-800">编辑</router-link>
@@ -106,7 +106,7 @@ const total = ref(0)
 
 const filters = reactive({
   status: '',
-  categoryId: '',
+  categoryId: '' as string | number,
   keyword: ''
 })
 
@@ -115,7 +115,9 @@ const fetchArticles = async () => {
     const res = await getArticleList({
       page: currentPage.value,
       size: pageSize.value,
-      ...filters
+      status: filters.status || undefined,
+      categoryId: filters.categoryId ? Number(filters.categoryId) : undefined,
+      keyword: filters.keyword || undefined
     })
     articles.value = res.data.records || res.data
     total.value = res.data.total || articles.value.length

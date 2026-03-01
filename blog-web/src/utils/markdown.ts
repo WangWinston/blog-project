@@ -3,11 +3,11 @@ import highlightjs from 'highlight.js'
 import 'highlight.js/styles/github-dark.css'
 
 // Create markdown renderer
-const md = new MarkdownIt({
+const md: MarkdownIt = new MarkdownIt({
   html: true,
   linkify: true,
   typographer: true,
-  highlight: function (str: string, lang: string) {
+  highlight: function (str: string, lang: string): string {
     if (lang && highlightjs.getLanguage(lang)) {
       try {
         return `<pre class="hljs"><code>${highlightjs.highlight(str, { language: lang, ignoreIllegals: true }).value}</code></pre>`

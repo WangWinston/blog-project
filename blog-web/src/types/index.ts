@@ -27,6 +27,18 @@ export interface User {
   createdAt: string
 }
 
+export interface UserDTO {
+  id: number
+  username: string
+  email: string
+  nickname: string
+  avatar: string
+  role: 'ADMIN' | 'USER'
+  status: 'ACTIVE' | 'DISABLED'
+  githubId?: string
+  createdAt: string
+}
+
 export interface Profile {
   bio: string
   website: string
@@ -36,18 +48,18 @@ export interface Profile {
 export interface LoginRequest {
   username: string
   password: string
-  verifyToken: string
+  verifyToken?: string
 }
 
 export interface RegisterRequest {
   username: string
   email: string
   password: string
-  verifyToken: string
+  verifyToken?: string
 }
 
 export interface LoginResponse {
-  token: string
+  accessToken: string
   user: User
 }
 
@@ -67,7 +79,13 @@ export interface Article {
   categoryName: string
   tags: Tag[]
   author: string
+  authorName?: string
   publishTime: string
+  publishedTime?: string
+  readTime?: number
+  content?: string
+  isLiked?: boolean
+  isFavorited?: boolean
   createdAt: string
   updatedAt: string
 }
@@ -94,6 +112,7 @@ export interface Category {
   children?: Category[]
   articleCount: number
   sortOrder: number
+  description?: string
   createdAt: string
 }
 
@@ -104,6 +123,7 @@ export interface Tag {
   slug: string
   color: string
   articleCount: number
+  description?: string
   createdAt: string
 }
 
@@ -117,20 +137,28 @@ export interface Comment {
   parentId: number | null
   content: string
   status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'DELETED'
+  articleTitle?: string
+  replyToUserName?: string
   children?: Comment[]
   createdAt: string
+  createdTime?: string
 }
 
 // Dashboard Types
 export interface DashboardStats {
   articleCount: number
+  totalArticles?: number
   publishedCount: number
   draftCount: number
   userCount: number
+  totalUsers?: number
   commentCount: number
+  totalComments?: number
   pendingCommentCount: number
+  pendingComments?: number
   todayViewCount: number
   totalViewCount: number
+  totalViews?: number
   hotArticles: Article[]
   recentComments: Comment[]
   viewTrend: {

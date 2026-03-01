@@ -5,11 +5,10 @@
     <!-- User Info Card -->
     <div class="card p-6 mb-8">
       <div class="flex items-center gap-4">
-        <img :src="user?.avatar || '/default-avatar.png'" class="w-20 h-20 rounded-full" />
+        <img :src="userInfo?.avatar || '/default-avatar.png'" class="w-20 h-20 rounded-full" />
         <div>
-          <h2 class="text-xl font-semibold">{{ user?.nickname || user?.username }}</h2>
-          <p class="text-gray-500">@{{ user?.username }}</p>
-          <p v-if="user?.bio" class="text-gray-600 mt-1">{{ user.bio }}</p>
+          <h2 class="text-xl font-semibold">{{ userInfo?.nickname || userInfo?.username }}</h2>
+          <p class="text-gray-500">@{{ userInfo?.username }}</p>
         </div>
       </div>
     </div>
@@ -73,26 +72,10 @@
           />
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">个人简介</label>
-          <textarea
-            v-model="profileForm.bio"
-            rows="3"
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
-          ></textarea>
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">个人网站</label>
+          <label class="block text-sm font-medium text-gray-700 mb-1">邮箱</label>
           <input
-            v-model="profileForm.website"
-            type="url"
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-          />
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">所在地</label>
-          <input
-            v-model="profileForm.location"
-            type="text"
+            v-model="profileForm.email"
+            type="email"
             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
           />
         </div>
@@ -113,10 +96,10 @@ import { ref, reactive, onMounted, computed } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { getUserFavorites, getUserLikes, updateProfile } from '@/api/portal'
 import ArticleCard from '@/components/portal/ArticleCard.vue'
-import type { Article } from '@/types'
+import type { Article, User } from '@/types'
 
 const userStore = useUserStore()
-const user = computed(() => userStore.user)
+const userInfo = computed<User | null>(() => userStore.userInfo)
 
 const tabs = [
   { key: 'favorites', label: '我的收藏' },
@@ -131,15 +114,13 @@ const loading = ref(false)
 
 const profileForm = reactive({
   nickname: '',
-  bio: '',
-  website: '',
-  location: ''
+  email: ''
 })
 
 const fetchFavorites = async () => {
   try {
     const res = await getUserFavorites()
-    favorites.value = res.data
+    favorites.value = res.data || []
   } catch (error) {
     console.error('Failed to fetch favorites:', error)
   }
@@ -148,7 +129,7 @@ const fetchFavorites = async () => {
 const fetchLikes = async () => {
   try {
     const res = await getUserLikes()
-    likes.value = res.data
+    likes.value = res.data || []
   } catch (error) {
     console.error('Failed to fetch likes:', error)
   }
@@ -172,11 +153,9 @@ onMounted(() => {
   fetchFavorites()
   fetchLikes()
 
-  if (user.value) {
-    profileForm.nickname = user.value.nickname || ''
-    profileForm.bio = user.value.bio || ''
-    profileForm.website = user.value.website || ''
-    profileForm.location = user.value.location || ''
+  if (userInfo.value) {
+    profileForm.nickname = userInfo.value.nickname || ''
+    profileForm.email = userInfo.value.email || ''
   }
 })
 </script>

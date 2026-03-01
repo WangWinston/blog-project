@@ -9,13 +9,13 @@
             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
             </svg>
-            {{ article.authorName }}
+            {{ article.author }}
           </span>
           <span class="flex items-center">
             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
-            {{ formatDate(article.publishedTime) }}
+            {{ formatDate(article.publishTime) }}
           </span>
           <span class="flex items-center">
             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -23,12 +23,6 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
             </svg>
             {{ article.viewCount }} 阅读
-          </span>
-          <span class="flex items-center">
-            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            {{ article.readTime }} 分钟
           </span>
         </div>
         <!-- Category & Tags -->
@@ -126,7 +120,7 @@
               <div class="flex-1">
                 <div class="flex items-center gap-2 mb-1">
                   <span class="font-medium">{{ comment.userName }}</span>
-                  <span class="text-sm text-gray-500">{{ formatDate(comment.createdTime) }}</span>
+                  <span class="text-sm text-gray-500">{{ formatDate(comment.createdAt) }}</span>
                 </div>
                 <p class="text-gray-700">{{ comment.content }}</p>
                 <button
@@ -144,7 +138,7 @@
                       <span v-if="child.replyToUserName" class="text-gray-500">
                         回复 <span class="text-primary-600">@{{ child.replyToUserName }}</span>
                       </span>
-                      <span class="text-sm text-gray-500">{{ formatDate(child.createdTime) }}</span>
+                      <span class="text-sm text-gray-500">{{ formatDate(child.createdAt) }}</span>
                     </div>
                     <p class="text-gray-700">{{ child.content }}</p>
                   </div>
@@ -211,10 +205,12 @@ const handleLike = async () => {
     router.push('/portal/login')
     return
   }
+  if (!article.value) return
   try {
-    const res = await toggleLike(article.value!.id)
-    article.value!.isLiked = res.data
-    article.value!.likeCount += res.data ? 1 : -1
+    const res = await toggleLike(article.value.id)
+    const isLiked = res as unknown as boolean
+    article.value.isLiked = isLiked
+    article.value.likeCount += isLiked ? 1 : -1
   } catch (error) {
     console.error('Failed to toggle like:', error)
   }
@@ -225,9 +221,11 @@ const handleFavorite = async () => {
     router.push('/portal/login')
     return
   }
+  if (!article.value) return
   try {
-    const res = await toggleFavorite(article.value!.id)
-    article.value!.isFavorited = res.data
+    const res = await toggleFavorite(article.value.id)
+    const isFavorited = res as unknown as boolean
+    article.value.isFavorited = isFavorited
   } catch (error) {
     console.error('Failed to toggle favorite:', error)
   }
@@ -239,16 +237,16 @@ const replyTo = (comment: Comment) => {
 }
 
 const submitComment = async () => {
-  if (!newComment.value.trim()) return
+  if (!newComment.value.trim() || !article.value) return
 
   try {
     const res = await createComment({
-      articleId: article.value!.id,
+      articleId: article.value.id,
       content: newComment.value,
       parentId: replyToComment.value?.id,
       replyToUserId: replyToComment.value?.userId
     })
-    comments.value.unshift(res.data)
+    comments.value.unshift((res as any).data)
     newComment.value = ''
     replyToComment.value = null
   } catch (error) {

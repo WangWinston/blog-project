@@ -11,7 +11,7 @@
           </div>
           <div>
             <p class="text-sm text-ink-500">文章总数</p>
-            <p class="text-2xl font-display font-bold text-ink-900">{{ stats.totalArticles }}</p>
+            <p class="text-2xl font-display font-bold text-ink-900">{{ stats.articleCount }}</p>
           </div>
         </div>
       </div>
@@ -25,7 +25,7 @@
           </div>
           <div>
             <p class="text-sm text-ink-500">用户数量</p>
-            <p class="text-2xl font-display font-bold text-ink-900">{{ stats.totalUsers }}</p>
+            <p class="text-2xl font-display font-bold text-ink-900">{{ stats.userCount }}</p>
           </div>
         </div>
       </div>
@@ -39,7 +39,7 @@
           </div>
           <div>
             <p class="text-sm text-ink-500">评论数量</p>
-            <p class="text-2xl font-display font-bold text-ink-900">{{ stats.totalComments }}</p>
+            <p class="text-2xl font-display font-bold text-ink-900">{{ stats.commentCount }}</p>
           </div>
         </div>
       </div>
@@ -54,21 +54,21 @@
           </div>
           <div>
             <p class="text-sm text-ink-500">总浏览量</p>
-            <p class="text-2xl font-display font-bold text-ink-900">{{ stats.totalViews }}</p>
+            <p class="text-2xl font-display font-bold text-ink-900">{{ stats.totalViewCount }}</p>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Alert -->
-    <div v-if="stats.pendingComments > 0" class="bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-8 flex items-center justify-between">
+    <div v-if="stats.pendingCommentCount > 0" class="bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-8 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center">
           <svg class="w-5 h-5 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
           </svg>
         </div>
-        <span class="text-amber-800">有 {{ stats.pendingComments }} 条评论待审核</span>
+        <span class="text-amber-800">有 {{ stats.pendingCommentCount }} 条评论待审核</span>
       </div>
       <router-link to="/admin/comments" class="btn btn-primary text-sm py-2">去审核</router-link>
     </div>

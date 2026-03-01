@@ -14,6 +14,7 @@ export const useUserStore = defineStore('user', () => {
   const isAdmin = computed(() => userInfo.value?.role === 'ADMIN')
   const username = computed(() => userInfo.value?.username || '')
   const avatar = computed(() => userInfo.value?.avatar || '')
+  const user = computed(() => userInfo.value)
 
   // Actions
   const setToken = (newToken: string) => {
@@ -25,6 +26,18 @@ export const useUserStore = defineStore('user', () => {
     userInfo.value = user
     localStorage.setItem('userRole', user.role)
     localStorage.setItem('userInfo', JSON.stringify(user))
+  }
+
+  // Alias for setUserInfo
+  const setUser = (user: User) => {
+    setUserInfo(user)
+  }
+
+  const updateUser = (user: Partial<User>) => {
+    if (userInfo.value) {
+      userInfo.value = { ...userInfo.value, ...user }
+      localStorage.setItem('userInfo', JSON.stringify(userInfo.value))
+    }
   }
 
   const fetchUserInfo = async () => {
@@ -75,12 +88,15 @@ export const useUserStore = defineStore('user', () => {
   return {
     token,
     userInfo,
+    user,
     isLoggedIn,
     isAdmin,
     username,
     avatar,
     setToken,
     setUserInfo,
+    setUser,
+    updateUser,
     fetchUserInfo,
     clearAuth,
     logout,

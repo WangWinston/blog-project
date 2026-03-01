@@ -69,7 +69,7 @@
                   </p>
                   <div class="article-card-meta">
                     <span v-if="article.categoryName" class="badge badge-amber">{{ article.categoryName }}</span>
-                    <span>{{ formatDate(article.publishedTime) }}</span>
+                    <span>{{ formatDate(article.publishTime) }}</span>
                     <span class="flex items-center gap-1">
                       <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
