@@ -92,7 +92,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { reactive } from 'vue'
 
 const siteSettings = reactive({
   title: '我的博客',

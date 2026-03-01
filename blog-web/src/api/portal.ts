@@ -1,5 +1,4 @@
-import { get, post, del } from './request'
-import type { Result } from '@/types'
+import { get, post } from './request'
 
 // Get article list
 export const getArticleList = (params?: {

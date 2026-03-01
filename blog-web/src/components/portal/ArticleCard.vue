@@ -18,7 +18,7 @@
         <div class="flex items-center justify-between text-sm text-ink-400">
           <div class="flex items-center gap-4">
             <span>{{ article.authorName || article.author }}</span>
-            <span>{{ formatDate(article.publishedTime) }}</span>
+            <span>{{ formatDate(article.publishTime) }}</span>
           </div>
           <div class="flex items-center gap-4">
             <span class="flex items-center gap-1">
@@ -52,7 +52,7 @@ import type { Article } from '@/types'
 
 defineProps<{ article: Article }>()
 
-const formatDate = (date: string) => {
+const formatDate = (date?: string) => {
   if (!date) return ''
   return new Date(date).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })
 }

@@ -7,7 +7,7 @@
     </button>
     <template v-for="page in pages" :key="page">
       <span v-if="page === '...'" class="px-2 text-ink-400">...</span>
-      <button v-else @click="$emit('change', page)" :class="['w-10 h-10 rounded-xl text-sm font-medium transition-all duration-200', page === current ? 'bg-ink-900 text-cream-100 shadow-soft' : 'text-ink-600 hover:bg-cream-200']">
+      <button v-else @click="handlePageClick(page)" :class="['w-10 h-10 rounded-xl text-sm font-medium transition-all duration-200', page === current ? 'bg-ink-900 text-cream-100 shadow-soft' : 'text-ink-600 hover:bg-cream-200']">
         {{ page }}
       </button>
     </template>
@@ -23,7 +23,7 @@
 import { computed } from 'vue'
 
 const props = defineProps<{ current: number; total: number; pageSize: number }>()
-defineEmits<{ change: [page: number] }>()
+const emit = defineEmits<{ change: [page: number] }>()
 
 const totalPages = computed(() => Math.ceil(props.total / props.pageSize))
 
@@ -44,4 +44,10 @@ const pages = computed(() => {
   }
   return result
 })
+
+const handlePageClick = (page: number | string) => {
+  if (typeof page === 'number') {
+    emit('change', page)
+  }
+}
 </script>

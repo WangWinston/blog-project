@@ -1,5 +1,5 @@
 import { get, post } from './request'
-import type { LoginResponse, User } from '@/types'
+import type { LoginResponse, UserDTO } from '@/types'
 
 // Login
 export const login = (data: { username: string; password: string; captchaToken?: string }) => {

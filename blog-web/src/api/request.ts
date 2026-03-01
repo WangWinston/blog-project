@@ -1,5 +1,4 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig, type AxiosResponse } from 'axios'
-import { useUserStore } from '@/stores/user'
 import router from '@/router'
 
 // Create axios instance
