@@ -45,8 +45,8 @@ chmod +x setup.sh
 
 ### 访问地址
 
-- 前端门户: http://localhost:5173
-- 后台管理: http://localhost:5173/admin
+- 前端门户: http://localhost:3000
+- 后台管理: http://localhost:3000/admin
 - 后端 API: http://localhost:8080
 
 ### 默认账号

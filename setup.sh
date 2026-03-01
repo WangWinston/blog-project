@@ -183,7 +183,7 @@ start_frontend() {
     nohup npm run dev > "$PROJECT_DIR/logs/frontend.log" 2>&1 &
     echo $! > "$PROJECT_DIR/logs/frontend.pid"
     info "前端已启动 (PID: $(cat $PROJECT_DIR/logs/frontend.pid))"
-    info "访问: http://localhost:5173"
+    info "访问: http://localhost:3000"
 }
 
 # 启动后端
@@ -305,9 +305,9 @@ init() {
     info "  博客系统初始化完成！"
     info "========================================="
     info ""
-    info "前端: http://localhost:5173"
+    info "前端: http://localhost:3000"
     info "后端: http://localhost:8080"
-    info "后台: http://localhost:5173/admin"
+    info "后台: http://localhost:3000/admin"
     info ""
     info "默认账号: admin / admin123"
     info ""
