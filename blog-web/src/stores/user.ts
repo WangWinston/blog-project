@@ -44,7 +44,7 @@ export const useUserStore = defineStore('user', () => {
     if (!token.value) return
     try {
       const res = await getCurrentUser()
-      setUserInfo(res.data)
+      setUserInfo(res as unknown as User)
     } catch (error) {
       console.error('Failed to fetch user info:', error)
       clearAuth()
