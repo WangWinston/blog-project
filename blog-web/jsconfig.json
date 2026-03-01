@@ -1,0 +1,11 @@
+# Vue Router path mapping
+[sources]
+src/views/**/*.vue
+
+[aliases]
+@/views = src/views
+@/components = src/components
+@/stores = src/stores
+@/api = src/api
+@/utils = src/utils
+@/types = src/types

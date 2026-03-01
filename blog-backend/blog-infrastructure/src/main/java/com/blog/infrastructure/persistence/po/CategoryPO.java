@@ -1,0 +1,43 @@
+package com.blog.infrastructure.persistence.po;
+
+import com.baomidou.mybatisplus.annotation.*;
+import lombok.Data;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+/**
+ * Category Persistence Object
+ */
+@Data
+@TableName("category")
+public class CategoryPO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @TableId(type = IdType.AUTO)
+    private Long id;
+
+    private String name;
+
+    private String slug;
+
+    private String description;
+
+    private Long parentId;
+
+    private Integer sortOrder;
+
+    private String icon;
+
+    private Integer articleCount;
+
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createdTime;
+
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updatedTime;
+
+    @TableLogic
+    private Integer deleted;
+}

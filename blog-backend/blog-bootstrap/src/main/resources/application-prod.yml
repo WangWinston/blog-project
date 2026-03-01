@@ -1,0 +1,41 @@
+spring:
+  # MySQL
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST:mysql}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:blog}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: ${MYSQL_USER:blog}
+    password: ${MYSQL_PASSWORD:blog123}
+
+  # Redis
+  data:
+    redis:
+      host: ${REDIS_HOST:redis}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: 0
+      timeout: 10000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: -1ms
+          max-idle: 4
+          min-idle: 1
+
+# JWT
+jwt:
+  secret: ${JWT_SECRET:blog-prod-secret-key-must-be-at-least-256-bits-long-for-hs256}
+  expiration: 7200000
+  refresh-expiration: 604800000
+
+# GitHub OAuth
+github:
+  oauth:
+    client-id: ${GITHUB_CLIENT_ID:}
+    client-secret: ${GITHUB_CLIENT_SECRET:}
+    redirect-uri: ${GITHUB_REDIRECT_URI:http://localhost/api/auth/github/callback}
+
+# Logging
+logging:
+  level:
+    com.blog: info
+    org.springframework: warn
