@@ -138,7 +138,7 @@
 
   /* Article Card */
   .article-card {
-    @apply card p-6 group cursor-pointer;
+    @apply card p-6 cursor-pointer;
   }
 
   .article-card:hover {
@@ -146,9 +146,12 @@
   }
 
   .article-card-title {
-    @apply text-xl font-semibold text-ink-900 group-hover:text-amber-600
-           transition-colors duration-200 line-clamp-2;
+    @apply text-xl font-semibold text-ink-900 transition-colors duration-200 line-clamp-2;
     font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  }
+
+  .article-card:hover .article-card-title {
+    @apply text-amber-600;
   }
 
   .article-card-excerpt {
