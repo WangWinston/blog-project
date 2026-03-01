@@ -55,7 +55,7 @@
                   class="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-cream-200 transition-colors"
                 >
                   <img
-                    :src="userStore.avatar || '/default-avatar.png'"
+                    :src="userStore.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + userStore.username"
                     alt="avatar"
                     class="w-8 h-8 rounded-lg object-cover ring-2 ring-cream-300"
                   />

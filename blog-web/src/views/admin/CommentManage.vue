@@ -28,7 +28,7 @@
       <div class="divide-y divide-gray-200">
         <div v-for="comment in comments" :key="comment.id" class="p-4">
           <div class="flex items-start gap-4">
-            <img :src="comment.userAvatar || '/default-avatar.png'" class="w-10 h-10 rounded-full" />
+            <img :src="comment.userAvatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + comment.userName" class="w-10 h-10 rounded-full" />
             <div class="flex-1">
               <div class="flex items-center gap-2 mb-1">
                 <span class="font-medium">{{ comment.userName }}</span>

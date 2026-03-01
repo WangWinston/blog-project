@@ -43,7 +43,7 @@
               </svg>
             </button>
             <div class="flex items-center gap-3">
-              <img src="/default-avatar.png" class="w-8 h-8 rounded-lg" />
+              <img :src="userStore.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=admin'" class="w-8 h-8 rounded-lg" />
               <span class="text-sm font-medium text-ink-700">Admin</span>
             </div>
           </div>
@@ -61,8 +61,10 @@
 <script setup lang="ts">
 import { computed, h } from 'vue'
 import { useRoute } from 'vue-router'
+import { useUserStore } from '@/stores/user'
 
 const route = useRoute()
+const userStore = useUserStore()
 
 const menuItems = [
   { name: '控制台', path: '/admin', icon: () => h('svg', { class: 'w-5 h-5', fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24' }, [

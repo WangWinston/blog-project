@@ -5,7 +5,7 @@
     <!-- User Info Card -->
     <div class="card p-6 mb-8">
       <div class="flex items-center gap-4">
-        <img :src="userInfo?.avatar || '/default-avatar.png'" class="w-20 h-20 rounded-full" />
+        <img :src="userInfo?.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + (userInfo?.username || 'user')" class="w-20 h-20 rounded-full" />
         <div>
           <h2 class="text-xl font-semibold">{{ userInfo?.nickname || userInfo?.username }}</h2>
           <p class="text-gray-500">@{{ userInfo?.username }}</p>

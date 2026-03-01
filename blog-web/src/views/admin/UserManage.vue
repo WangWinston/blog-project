@@ -18,7 +18,7 @@
           <tr v-for="user in users" :key="user.id" class="hover:bg-gray-50">
             <td class="px-6 py-4">
               <div class="flex items-center">
-                <img :src="user.avatar || '/default-avatar.png'" class="w-10 h-10 rounded-full mr-3" />
+                <img :src="user.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + user.username" class="w-10 h-10 rounded-full mr-3" />
                 <div>
                   <p class="font-medium text-gray-900">{{ user.nickname || user.username }}</p>
                   <p class="text-sm text-gray-500">@{{ user.username }}</p>

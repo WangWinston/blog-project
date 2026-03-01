@@ -105,7 +105,7 @@
         </div>
         <div class="p-5">
           <div v-for="comment in recentComments" :key="comment.id" class="flex items-start gap-3 py-3 border-b border-cream-100 last:border-0">
-            <img :src="comment.userAvatar || '/default-avatar.png'" class="w-8 h-8 rounded-lg object-cover" />
+            <img :src="comment.userAvatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + comment.userName" class="w-8 h-8 rounded-lg object-cover" />
             <div class="flex-1 min-w-0">
               <p class="text-sm"><span class="font-medium text-ink-800">{{ comment.userName }}</span> <span class="text-ink-400">评论了</span></p>
               <p class="text-sm text-ink-600 line-clamp-1 mt-1">{{ comment.content }}</p>
