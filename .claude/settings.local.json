@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git:*)",
+      "Bash(mvn compile:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(java:*)",
+      "Bash(curl:*)",
+      "Bash(docker ps:*)",
+      "Bash(ss:*)",
+      "Bash(docker compose:*)",
+      "Bash(cmd.exe:*)",
+      "Bash(powershell.exe:*)",
+      "Bash(where.exe docker:*)"
+    ]
+  }
+}

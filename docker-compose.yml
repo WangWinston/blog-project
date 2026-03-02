@@ -1,0 +1,94 @@
+# Production Docker Compose
+# Full stack deployment with MySQL, Redis, Backend, and Frontend
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: blog-mysql
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-root123}
+      - MYSQL_DATABASE=blog
+      - MYSQL_USER=blog
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-blog123}
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - blog-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: blog-redis
+    restart: unless-stopped
+    command: redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - blog-network
+
+  # Backend Service
+  backend:
+    build:
+      context: ./blog-backend
+      dockerfile: Dockerfile
+    container_name: blog-backend
+    restart: unless-stopped
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=blog
+      - MYSQL_USER=blog
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-blog123}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - JWT_SECRET=${JWT_SECRET:-blog-prod-secret-key-must-be-at-least-256-bits-long-for-hs256}
+      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID:-}
+      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET:-}
+      - GITHUB_REDIRECT_URI=${GITHUB_REDIRECT_URI:-http://localhost/api/auth/github/callback}
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - blog-network
+
+  # Frontend Service
+  frontend:
+    build:
+      context: ./blog-web
+      dockerfile: Dockerfile
+    container_name: blog-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - blog-network
+
+volumes:
+  mysql-data:
+
+networks:
+  blog-network:
+    driver: bridge

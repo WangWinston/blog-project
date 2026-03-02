@@ -1,5 +1,6 @@
 package com.blog.common;
 
+import com.blog.common.enums.ResultCode;
 import lombok.Data;
 
 import java.io.Serializable;

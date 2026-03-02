@@ -46,3 +46,24 @@ management:
   endpoint:
     health:
       show-details: always
+
+# Knife4j API Doc
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: com.blog.interfaces.controller
+
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+    enable-swagger-models: true
+    enable-document-manage: true
+    swagger-model-name: Entity Models

@@ -1,10 +1,12 @@
 import MarkdownIt from 'markdown-it'
 import highlightjs from 'highlight.js'
+import DOMPurify from 'dompurify'
 import 'highlight.js/styles/github-dark.css'
 
 // Create markdown renderer
+// Note: html: false to prevent XSS attacks (raw HTML not allowed)
 const md: MarkdownIt = new MarkdownIt({
-  html: true,
+  html: false,
   linkify: true,
   typographer: true,
   highlight: function (str: string, lang: string): string {
@@ -20,10 +22,23 @@ const md: MarkdownIt = new MarkdownIt({
 })
 
 /**
- * Render markdown to HTML
+ * Render markdown to HTML with XSS protection
  */
 export const renderMarkdown = (content: string): string => {
-  return md.render(content)
+  // Render markdown then sanitize with DOMPurify for extra security
+  const rawHtml = md.render(content)
+  return DOMPurify.sanitize(rawHtml, {
+    ALLOWED_TAGS: [
+      'p', 'br', 'strong', 'em', 'u', 's', 'del', 'ins',
+      'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+      'ul', 'ol', 'li',
+      'blockquote', 'pre', 'code',
+      'a', 'img',
+      'table', 'thead', 'tbody', 'tr', 'th', 'td',
+      'hr', 'div', 'span'
+    ],
+    ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class', 'id', 'target', 'rel']
+  })
 }
 
 /**

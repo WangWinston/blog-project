@@ -1,4 +1,4 @@
-import { get, post } from './request'
+import { get, post, put } from './request'
 
 // Get article list
 export const getArticleList = (params?: {
@@ -107,5 +107,5 @@ export const updateProfile = (data: {
   website?: string
   location?: string
 }) => {
-  return post<any>('/portal/user/me', data)
+  return put<any>('/portal/user/me', data)
 }

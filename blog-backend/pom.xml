@@ -46,6 +46,7 @@
         <lombok.version>1.18.30</lombok.version>
         <hutool.version>5.8.24</hutool.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <knife4j.version>4.4.0</knife4j.version>
     </properties>
 
     <dependencyManagement>
@@ -146,6 +147,13 @@
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct-processor</artifactId>
                 <version>${mapstruct.version}</version>
+            </dependency>
+
+            <!-- Knife4j API Doc -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -182,6 +182,9 @@ public class UserService {
         dto.setEmail(user.getEmail());
         dto.setAvatar(user.getAvatar());
         dto.setRole(user.getRole());
+        dto.setStatus(user.getStatus());
+        dto.setGithubId(user.getGithubId());
+        dto.setCreatedAt(user.getCreatedTime());
 
         if (user.getProfile() != null) {
             Profile profile = user.getProfile();

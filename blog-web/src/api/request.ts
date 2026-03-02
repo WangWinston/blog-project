@@ -1,5 +1,6 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig, type AxiosResponse } from 'axios'
 import router from '@/router'
+import { isTokenExpired } from '@/utils/format'
 
 // Create axios instance
 const request: AxiosInstance = axios.create({
@@ -15,6 +16,15 @@ request.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token')
     if (token) {
+      // Check if token is expired before sending request
+      if (isTokenExpired(token)) {
+        // Token expired, clear storage and redirect to login
+        localStorage.removeItem('token')
+        localStorage.removeItem('userRole')
+        localStorage.removeItem('userInfo')
+        router.push({ name: 'Login' })
+        return Promise.reject(new Error('Token expired'))
+      }
       config.headers.Authorization = `Bearer ${token}`
     }
     return config

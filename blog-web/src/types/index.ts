@@ -80,14 +80,17 @@ export interface Article {
   tags: Tag[]
   author: string
   authorName?: string
-  publishTime: string
-  publishedTime?: string
+  authorId?: number
+  publishedTime: string
+  publishTime?: string  // alias for compatibility
   readTime?: number
   content?: string
   isLiked?: boolean
   isFavorited?: boolean
-  createdAt: string
-  updatedAt: string
+  createdTime: string
+  createdAt?: string  // alias for compatibility
+  updatedTime: string
+  updatedAt?: string  // alias for compatibility
 }
 
 export interface ArticleDetail extends Article {
@@ -140,8 +143,8 @@ export interface Comment {
   articleTitle?: string
   replyToUserName?: string
   children?: Comment[]
-  createdAt: string
-  createdTime?: string
+  createdTime: string
+  createdAt?: string  // alias for compatibility
 }
 
 // Dashboard Types
