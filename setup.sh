@@ -105,12 +105,22 @@ check_maven() {
 install_maven() {
     step "安装 Maven ${MAVEN_VERSION}..."
     local maven_url="https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz"
+    # 国内镜像备用地址
+    local maven_mirror="https://mirrors.tuna.tsinghua.edu.cn/apache/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz"
     local maven_dir="/opt/maven"
 
-    info "下载 Maven..."
-    wget -q "$maven_url" -O /tmp/maven.tar.gz
+    info "下载 Maven (使用国内镜像加速)..."
 
-    info "安装 Maven..."
+    # 先尝试清华镜像，失败则回退到官方源
+    if wget --timeout=60 --tries=3 --progress=bar:force "$maven_mirror" -O /tmp/maven.tar.gz 2>&1; then
+        info "清华镜像下载成功 ✓"
+    elif wget --timeout=60 --tries=3 --progress=bar:force "$maven_url" -O /tmp/maven.tar.gz 2>&1; then
+        info "官方源下载成功 ✓"
+    else
+        error "Maven 下载失败，请检查网络连接或手动安装"
+    fi
+
+    info "解压安装 Maven..."
     sudo mkdir -p "$maven_dir"
     sudo tar -xzf /tmp/maven.tar.gz -C "$maven_dir" --strip-components=1
 
